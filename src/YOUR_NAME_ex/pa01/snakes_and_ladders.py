@@ -64,6 +64,6 @@ def multi_game_experiment(num_games, num_players, seed):
 if __name__ == "__main__":
     result = multi_game_experiment(100, 4, 89)
     result.sort()
-    print(result[0], result[99])
-    print(statistics.median(result))
-    print(statistics.mean(result), statistics.stdev(result))
+    print('The shortest game duration was {0}, and the longest was {1}'.format(result[0], result[99]))
+    print('The median is {0}'.format(statistics.median(result)))
+    print('The mean is {0} and the standard deviation is {1:.2}'.format(statistics.mean(result), statistics.stdev(result)))
