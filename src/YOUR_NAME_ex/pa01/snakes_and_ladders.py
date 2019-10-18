@@ -1,5 +1,15 @@
+# -*- coding: utf-8 -*-
+
+__authors__ = 'Kaspar Akilles Lilja, Kevin Martin Lankut'
+__emails__ = 'kalilja@nmbu.no, kela@nmbu.no'
+
+"""
+Source:
+https://codereview.stackexchange.com/questions/176586/snakes-and-ladders-game
+"""
+
 import random
-import time
+import statistics
 
 
 def move_player(player, current_pos):
@@ -16,20 +26,6 @@ def move_player(player, current_pos):
 
 
 def single_game(num_players):
-    """
-    Returns duration of single game.
-
-    Arguments
-    ---------
-    num_players : int
-        Number of players in the game
-
-    Returns
-    -------
-    num_moves : int
-        Number of moves the winning player needed to reach the goal
-    """
-
     players = {}
     for player in range(1, num_players + 1):
         players[player] = 0
@@ -37,7 +33,6 @@ def single_game(num_players):
     # Start game
     start = 1
     moves = 0
-    time_start = time.time()
     while not start == 0:
         for player, current_pos in players.items():
 
@@ -49,9 +44,26 @@ def single_game(num_players):
 
             # Check win
             if players[player] > 89:
-                time_end = time.time()
                 start = 0
-                return (time_end - time_start), moves
+                return moves
 
 
-single_game(3)
+def multiple_games(num_games, num_players):
+    total_games = []
+    for i in range(1, num_games + 1):
+        games = single_game(num_players)
+        total_games.append(games)
+    return total_games
+
+
+def multi_game_experiment(num_games, num_players, seed):
+    random.seed(seed)
+    return multiple_games(num_games, num_players)
+
+
+if __name__ == "__main__":
+    result = multi_game_experiment(100, 4, 89)
+    result.sort()
+    print(result[0], result[99])
+    print(statistics.median(result))
+    print(statistics.mean(result), statistics.stdev(result))
