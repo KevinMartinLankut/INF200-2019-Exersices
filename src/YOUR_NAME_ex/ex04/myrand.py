@@ -7,9 +7,8 @@ __email__ = 'kela@nmbu.no'
 class LCGRand:
     def __init__(self, seed):
         self.seed = seed
-        self.a = a = 7**5
+        self.a = 7**5
         self.m = 2 ** 31 - 1
-
 
     def rand(self):
         self.seed = self.a * self.seed % self.m
@@ -17,19 +16,18 @@ class LCGRand:
 
 
 class ListRand:
-    def __init__(self, list):
-        self.list = list
-        self.list_len = len(list)
+    def __init__(self, liste):
+        self.liste = liste
+        self.liste_len = len(liste)
         self.index = -1
         # Kommentar til megselv:
         # Bruker index = -1 fordi første elementet i en liste er 0
 
-
     def rand(self):
         self.index += 1
-        if self.index >= self.list_len:
+        if self.index >= self.liste_len:
             raise RuntimeError()
-        return self.list[self.index]
+        return self.liste[self.index]
 
 
 if __name__ == "__main__":
