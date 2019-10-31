@@ -6,9 +6,10 @@ __email__ = 'kela@nmbu.no'
 from walker_sim import Walker, Simulation
 import random
 
+
 class BoundedWalker(Walker):
     def __init__(self, start, home, left_limit, right_limit):
-        super().__init__(start, home, left_limit, right_limit)
+        super().__init__(start, home)
         """
         Initialise the walker
 
@@ -23,12 +24,14 @@ class BoundedWalker(Walker):
         right_limit : int
             The right boundary  of walker movement
         """
+        self.start = start
+        self.home = home
         self.left_limit = left_limit
         self.right_limit = right_limit
 
     def bounded_move(self):
         if self.start != self.left_limit and self.start != self.right_limit:
-            self.move()
+            Walker.move(self)
 
         #  "If the random generator decides that the walker should move beyond
         #  a limit, the move is simply not executed." I can't think of any way
@@ -48,8 +51,10 @@ class BoundedWalker(Walker):
             self.start -= 1
             self.steps += 1
 
+
 class BoundedSimulation(Simulation):
     def __init__(self, start, home, seed, left_limit, right_limit):
+        super().__init__(start, home, seed)
         """
         Initialise the simulation
 
@@ -66,6 +71,9 @@ class BoundedSimulation(Simulation):
         right_limit : int
             The right boundary  of walker movement
         """
+        self.start = start
+        self.home = home
+        self.seed = seed
         self.left_limit = left_limit
         self.right_limit = right_limit
     
@@ -86,7 +94,7 @@ class BoundedSimulation(Simulation):
             position = bw.get_position()
         return bw.get_steps()
 
-    def bounded_run_simulation(self, num_walks):
+    def run_bounded_simulation(self, num_walks):
         """
         Run a set of walks, returns list of number of steps taken.
 
@@ -110,5 +118,6 @@ class BoundedSimulation(Simulation):
 if __name__ == "__main__":
     left = [0, -10, -100, -1000, -10000]
     for i in left:
-        BS1 = BoundedSimulation(0, 20, 12345, i, 20)
-        print(BS1.run_boundedsimulation(20))
+        bs = BoundedSimulation(0, 20, 12345, i, 20)
+        bs_results = bs.run_bounded_simulation(20)
+        print('Left boundary: {0}. Total steps: {1}'.format(i, bs_results))
