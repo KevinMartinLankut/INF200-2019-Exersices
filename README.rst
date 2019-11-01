@@ -1,7 +1,7 @@
 INF200 Exersices:
 =================
 
-FIRST_NAME SURNAME:
+Kevin Martin Lankut
 -------------------
 
 This repository contains all the exersices written as part of the
