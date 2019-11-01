@@ -32,24 +32,23 @@ class BoundedWalker(Walker):
     def bounded_move(self):
         if self.start != self.left_limit and self.start != self.right_limit:
             Walker.move(self)
-
-        #  "If the random generator decides that the walker should move beyond
-        #  a limit, the move is simply not executed." I can't think of any way
-        #  to actually execute move(), and check what the random generator
-        #  generates to then stop it before it goes on to moving the walker
-        #  and adding steps. I also don't see the point of adding a new generator
-        #  to then see if it moves or not, considering that at the end you don't
-        #  want to see amount of *potential* moves, but amount of *steps*, meaning
-        #  even if the generator goes past a limit, it doesn't count it, so might
-        #  as well just start moving in the right direction because eventually
-        #  it will do that.
-
         elif self.start == self.left_limit:
             self.start += 1
             self.steps += 1
         elif self.start == self.right_limit:
             self.start -= 1
             self.steps += 1
+
+        """'If the random generator decides that the walker should move beyond
+        a limit, the move is simply not executed.' I can't think of any way
+        to actually execute move(), and check what the random generator
+        generates to then stop it before it goes on to moving the walker
+        and adding steps. I also don't see the point of adding a new generator
+        to then see if it moves or not, considering that at the end you don't
+        want to see amount of *potential* moves, but amount of *steps*, meaning
+        even if the generator goes past a limit, it doesn't count it, so might
+        as well just start moving in the right direction because eventually
+        it will do that."""
 
 
 class BoundedSimulation(Simulation):
