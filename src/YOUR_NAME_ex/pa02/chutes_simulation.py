@@ -95,11 +95,8 @@ class ResilientPlayer(Player):
             throw2 = random.randint(1, 6)
             self.position += throw2
 
-
         if self.board.position_adjustment(self.position) > 0:
             self.position += self.board.position_adjustment(self.position)
-
-
 
 
 class LazyPlayer(Player):
@@ -158,7 +155,8 @@ class Simulation:
         self.winner_type = {'Player': 0, 'LazyPlayer': 0, 'ResilientPlayer': 0}
         self.durations_type = {'Player': [], 'LazyPlayer': [],
                                'ResilientPlayer': []}
-        self.players_type = {'Player': 0, 'LazyPlayer': 0, 'ResilientPlayer': 0}
+        self.players_type = {'Player': 0, 'LazyPlayer': 0,
+                             'ResilientPlayer': 0}
 
     def single_game(self):
         """
@@ -238,4 +236,3 @@ class Simulation:
             self.players_type[str(player.__name__)] += 1
 
         return self.players_type
-
