@@ -11,9 +11,9 @@ class Board:
 
     def __init__(self, chutes=None, ladders=None, goal=None):
         """
-        :param chutes: can be entered as a custom list of chutes
-        :param ladders: can be entered as a custom list of ladders
-        :param goal: can be entered as a custom goal
+        :param chutes: a custom list of chutes
+        :param ladders: a custom list of ladders
+        :param goal: custom goal where you can choose the value
         All these parameters have set standards, but can be altered.
         """
         if chutes is None:
@@ -41,7 +41,7 @@ class Board:
     def position_adjustment(self, position):
         """
         :param position: takes the position of a player
-        :return: returns if the player should move up or down a ladder/chute
+        :return: returns if the player should move up a ladder or down a chute
         """
         for start, end in self.chutes_ladders.items():
             if position == start:
@@ -61,7 +61,7 @@ class Player:
 
     def move(self):
         """
-        This function alters the position of the player, but does not return
+        This function alters the position of the player, but doesn't return
         anything.
         """
         throw = random.randint(1, 6)
@@ -76,14 +76,14 @@ class ResilientPlayer(Player):
         :param board: takes a custom or standard board with chutes ladders and
         goal previously set.
         :param extra_steps: is the extra number of steps the ResilientPlayer
-        will move after going down a chute. Default = 1.
+        will move forward after going down a chute. The default is 1.
         """
         super().__init__(board)
         self.extra_steps = extra_steps
 
     def move(self):
         """
-        This function alters the position of the player, but does not return
+        This function alters the position of the player, but doesn't return
         anything.
         """
         throw = random.randint(1, 6)
@@ -106,16 +106,16 @@ class LazyPlayer(Player):
         :param board: takes a custom or standard board with chutes ladders and
         goal previously set.
         :param dropped_steps: is the number of steps the LazyPlayer walks
-         backwards after going up a ladder. Default = 1.
+        backwards after going up a ladder. The default is 1.
         """
         super().__init__(board)
         self.dropped_steps = dropped_steps
 
     def move(self):
         """
-        This function alters the position of the player, but does not return
-        anything, but if the result of moving is going backwards, then the move
-        will simply not be executed.
+        This function alters the position of the player, but doesn't return
+        anything, but if the result of steps backward and the roll of the dice is negative,
+        then the move will simply not be executed.
         """
         throw = random.randint(1, 6)
         self.position += throw
