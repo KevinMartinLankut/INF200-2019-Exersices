@@ -114,8 +114,8 @@ class LazyPlayer(Player):
     def move(self):
         """
         This function alters the position of the player, but doesn't return
-        anything, but if the result of steps backward and the roll of the dice is negative,
-        then the move will simply not be executed.
+        anything, but if the result of steps backward and the roll
+        of the dice is negative, then the move will simply not be executed.
         """
         throw = random.randint(1, 6)
         self.position += throw

@@ -41,6 +41,11 @@ class TestBoard:
         b = cs.Board()
         assert isinstance(b.position_adjustment(1), (int, float))
 
+    def test_puts_in_wrong_value_type(self):
+        """Test if we put in wrong value type for goal and expects TypeError"""
+        b = cs.Board(ladders=[(1, 4), (5, 16)], chutes=[(9, 2), (12, 3)], goal="a")
+        pytest.raises(TypeError)
+
 
 class TestPlayer:
     """
