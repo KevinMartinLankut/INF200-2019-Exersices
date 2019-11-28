@@ -46,7 +46,7 @@ def predict_proba(coef, X):
     or hat{y}=σ(X*w)
 
     Parameters:
-    :param coef: The weight vector 'w' (np.ndarray(shape=(r,))
+    :param coef: The weight vector w (np.ndarray(shape=(r,))
     :param X: The data matrix (np.ndarray(shape=(n, r))
 
     Returns:
@@ -165,7 +165,7 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         convergence tolerance(self.tol).
 
         Parameters:
-        :param coef: The weight vector w (np.ndarray(shape=(r,))
+        :param coef: The weight vector w^(k) (np.ndarray(shape=(r,))
         :param X: The data matrix (np.ndarray(shape=(n, r))
         :param y: The true class labels for each data point
         (np.ndarray(shape=(n,))
@@ -179,52 +179,41 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         pass
 
     def _fit_gradient_descent(self, coef, X, y):
-        """Fit the logisitc regression model to the data given initial weights
+        """
+        Fit the logisitc regression model to the data given initial weights
 
         Gradient descent works by iteratively applying the following update
         rule
 
-        .. math::
+        w^k <- w^(k-1) - η*∇*L(w^(k−1);X,y)
 
-            \mathbf{w}^{(k)} \gets \mathbf{w}^{(k-1)} - \eta \nabla L(\mathbf{w}^{(k-1)}; X, \mathbf{y}),
+        where w^k is the coefficient vector at iteration k, w^(k-1) is the
+        coefficient vector at iteration k-1, η is the learning rate and
+        ∇*L(w^(k−1);X,y) is the gradient of the loss function at iteration k-1.
 
-        where :math:`\mathbf{w}^{(k)}` is the coefficient vector at iteration 
-        ``k``, :math:`\mathbf{w}^{(k-1)}` is the coefficient vector at 
-        iteration k-1, :math:`\eta` is the learning rate and 
-        :math:`\nabla L(\mathbf{w}^{(k-1)}; X, \mathbf{y})` is the gradient of
-        the loss function at iteration k-1.
+        The iterative algorithm should be performed for at most self.max_iter
+        iterations, or until the convergence criteria is reached.
 
-        The iterative algorithm should be performed for at most
-        ``self.max_iter`` iterations, or until the convergence criteria is
-        reached.
+        Parameters:
+        :param coef: The initial guess for the coefficient vector.
+        May be modified inplace by the method (np.ndarray(shape=(r,))
+        :param X: The data matrix(np.ndarray(shape=(n, r))
+        :param y: The target vector(np.ndarray(shape=(n,))
 
-        Parameters
-        ----------
-        coef : np.ndarray(shape=(r,))
-            The initial guess for the coefficient vector.
-            May be modified inplace by the method.
-        X : np.ndarray(shape=(n, r))
-            The data matrix
-        y : np.ndarray(shape=(n,))
-            The target vector
-
-        Returns
-        -------
-        coef : np.ndarray(shape=(n,))
-            The logistic regression weights
+        Returns:
+        :return coef: The logistic regression weights(np.ndarray(shape=(n,))
         """
         # Your code here
         pass
 
     def fit(self, X, y):
-        """Fit a logistic regression model to the data.
+        """
+        Fit a logistic regression model to the data.
 
-        Parameters
-        ----------
-        X : np.ndarray(shape=(n, r))
-            The data matrix
-        y : np.ndarray(shape=(n,))
-            The observed classes for each data point in X.
+        Parameters:
+        :param X: The data matrix(np.ndarray(shape=(n, r))
+        :param y: The observed classes for each data point in X
+        (np.ndarray(shape=(n,))
         """
         # This function ensures that X and y has acceptable data types
         # and flattens y to have shape (n,) if it has shape (n, 1)
@@ -244,58 +233,50 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         return self
 
     def predict_proba(self, X):
-        """Estimate the class probabilities.
+        """
+        Estimate the class probabilities.
 
         This function returns the probability that each datapoint belongs to
         the positive class.
 
-        Parameters
-        ----------
-        X : np.ndarray
-            The data matrix.
+        Parameters:
+        :param X: The data matrix(np.ndarray(shape=(n, r))
 
-        Returns
-        -------
-        p : np.ndarray
-            A vector of probabilities. The i-th entry is the probability for
-            the i-th data point belonging to the positive class.
+        Returns:
+        :return p: A vector of probabilities. The i-th entry is the probability
+        for the i-th data point belonging to the positive class(np.ndarray)
         """
         if not hasattr(self, "coef_"):
             raise NotFittedError("Call fit before prediction")
         return predict_proba(self.coef_, X)
 
     def predict_log_proba(self, X):
-        """Estimate the class log probabilities.
+        """
+        Estimate the class log probabilities.
 
         This function returns the probability that each datapoint belongs to
         the positive class.
 
-        Parameters
-        ----------
-        X : np.ndarray
-            The data matrix.
+        Parameters:
+        :param X: The data matrix(np.ndarray(shape=(n, r))
 
-        Returns
-        -------
-        lp : np.ndarray
-            A vector of log probabilities. The i-th entry is the log
-            probability for the i-th data point belonging to the positive
-            class.
+        Returns:
+        :return lp: A vector of log probabilities. The i-th entry is the log
+        probability for the i-th data point belonging to the positive class
+        (np.ndarray)
         """
         return np.log(self.predict_proba(X))
 
     def predict(self, X):
-        """Predict whether each data point in X belongs to the positive class
+        """
+        Predict whether each data point in X belongs to the positive class
 
-        Parameters
-        ----------
-        X : np.ndarray
-            Data matrix
+        Parameters:
+        :param X: The data matrix(np.ndarray(shape=(n, r))
 
-        Returns
-        -------
-        yhat : np.ndarray
-            Predicted classes for the input data matrix. len(yhat) == len(X)
+        Returns:
+        :return yhat: Predicted classes for the input data matrix(np.ndarray)
+        len(yhat) == len(X)
         """
         return self.predict_proba(X) >= 0.5
 
