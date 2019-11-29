@@ -209,13 +209,11 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         """
         k = 0
         converged = False
-
         while (not converged) and k < self.max_iter:
             converged = self._has_converged(coef, X, y)
             coef = coef - self.learning_rate*logistic_gradient(coef, X, y)
             k += 1
         return coef
-
 
     def fit(self, X, y):
         """
