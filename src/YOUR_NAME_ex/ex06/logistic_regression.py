@@ -209,10 +209,11 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         """
         k = 0
         converged = False
-        gradient = logistic_gradient(coef, X, y)
-        while (converged == False) or not (k < self.max_iter):
+
+        while (not converged) and k < self.max_iter:
             converged = self._has_converged(coef, X, y)
-            coef = coef - self.learning_rate*gradient
+            coef = coef - self.learning_rate*logistic_gradient(coef, X, y)
+            k += 1
         return coef
 
 
@@ -301,6 +302,8 @@ if __name__ == "__main__":
     # Fill in your code here.
     # Create a logistic regression object and fit it to the dataset
 
+    lr_model = LogisticRegression(max_iter=50)
+    lr_model.fit(X, y)
     # Print performance information
     print(f"Accuracy: {lr_model.score(X, y)}")
     print(f"True coefficients: {coef}")
