@@ -8,9 +8,6 @@ from sklearn.base import BaseEstimator, ClassifierMixin
 from sklearn.exceptions import NotFittedError
 from sklearn.utils import check_random_state, check_X_y
 
-#  Note to self: Spør om det er en måte å liste atributes på slik som
-#  :param:, :return: osv
-
 
 def sigmoid(z):
     """
@@ -27,8 +24,8 @@ def sigmoid(z):
     Returns:
     :return sigmoidal_transformed_z: Transformed input (np.ndarray)
     """
-    # Your code here
-    pass
+    sigmodial_transformex_z = 1 / (1 + np.exp(-z))
+    return sigmodial_transformex_z
 
 
 def predict_proba(coef, X):
@@ -43,7 +40,7 @@ def predict_proba(coef, X):
     where x_i is the i-th row in X and σ is the sigmoidal function.
     Alternatively, in matrix-vector form:
 
-    or hat{y}=σ(X*w)
+    hat{y}=σ(X*w)
 
     Parameters:
     :param coef: The weight vector w (np.ndarray(shape=(r,))
@@ -52,8 +49,9 @@ def predict_proba(coef, X):
     Returns:
     :return p: The predicted class probabilities (np.ndarray(shape(n,))
     """
-    # Your code here
-    pass
+    product = X.dot(coef)
+    p = sigmoid(product)
+    return p
 
 
 def logistic_gradient(coef, X, y):
@@ -80,8 +78,9 @@ def logistic_gradient(coef, X, y):
     :return gradient: The gradient of the cross entropy loss related to the
     linear logistic regression model(np.ndarray(shape=(r,))
     """
-    # Your code here
-    pass
+    hat_y = predict_proba(coef, X)
+    gradient = np.transpose(X)@(hat_y-y)
+    return gradient
 
 
 class LogisticRegression(BaseEstimator, ClassifierMixin):
@@ -123,7 +122,7 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
     """
 
     def __init__(
-        self, max_iter=1000, tol=1e-5, learning_rate=0.01, random_state=None):
+            self, max_iter=1000, tol=1e-5, learning_rate=0.01, random_state=None):
         """
         Initialise a logistic regression instance.
 
@@ -148,8 +147,10 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
             A numpy random state object or a seed for a numpy random state
             object
         """
-        # Your code here
-        pass
+        self.max_iter = max_iter
+        self.tol = tol
+        self.learning_rate = learning_rate
+        self.random_state = random_state
 
     def _has_converged(self, coef, X, y):
         """
@@ -175,8 +176,11 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         False otherwise.
         :type: bool
         """
-        # Your code here
-        pass
+        gradient = np.linalg.norm(logistic_gradient(coef, X, y))
+        if gradient < self.tol:
+            return True
+        else:
+            return False
 
     def _fit_gradient_descent(self, coef, X, y):
         """
@@ -203,8 +207,14 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
         Returns:
         :return coef: The logistic regression weights(np.ndarray(shape=(n,))
         """
-        # Your code here
-        pass
+        k = 0
+        converged = False
+        gradient = logistic_gradient(coef, X, y)
+        while (converged == False) or not (k < self.max_iter):
+            converged = self._has_converged(coef, X, y)
+            coef = coef - self.learning_rate*gradient
+        return coef
+
 
     def fit(self, X, y):
         """
@@ -224,7 +234,7 @@ class LogisticRegression(BaseEstimator, ClassifierMixin):
 
         # A random state is a random number generator, akin to those
         # you made in earlier coursework. It has all functions of
-        # np.ranom, but its sequence of random numbers is not affected
+        # np.random, but its sequence of random numbers is not affected
         # by calls to np.random.
         random_state = check_random_state(self.random_state)
         coef = random_state.standard_normal(X.shape[1])
